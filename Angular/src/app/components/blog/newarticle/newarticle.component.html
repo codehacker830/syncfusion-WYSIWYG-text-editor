@@ -1,0 +1,80 @@
+<br>
+<h3>Nuovo articolo</h3>
+<button type="submit" class="btn btn-primary float-right" (click)="openModalIfEdited(content2)">Indietro</button>
+<button type="submit" class="btn btn-danger float-left" *ngIf="isDraft" (click)="openModalDeleteDraft(content3)">Cancella bozza</button>
+<br><br>
+<div class="alert alert-success" [hidden]="!savedDraft">{{savedDraft}}</div>
+<div class="alert alert-success" [hidden]="!articlePublished">{{articlePublished}}</div>
+<div class="alert alert-danger" [hidden]="!some_error">{{some_error}}</div>
+
+<div *ngFor="let myarticle of myArticles">
+    
+    <!-- [config]="{ ckfinder: {uploadUrl: 'http://localhost:8000/api/uploadimage'} }" -->
+    <ckeditor [editor]="Editor" data={{myarticle.content}} (change)="hasBeenEdited($event)"
+        (fileUploadequest)="onFileUploadRequest($event)" (fileUploadResponse)="onFileUploadResponse($event)">
+    </ckeditor>
+</div>
+<br>
+
+<button type="button" class="btn btn-primary float-right" data-toggle="modal" data-target="#exampleModal" *ngIf="edited" (click)="openWindow(content)">Pubblica articolo</button>
+<button type="button" class="btn btn-primary float-left" *ngIf="edited" (click)="saveArticleDraft()">Salva bozza</button>
+
+<!-- Pubblica articolo -->
+<ng-template #content let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Pubblica articolo</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form #thisForm=ngForm (ngSubmit)="publishThisArticle()">
+            <div class="form-group">
+                <label for="recipient-name" class="col-form-label">Titolo:</label>
+                <input type="text" name="title" class="form-control" id="recipient-name" [(ngModel)]="title" required>
+            </div>
+            <div class="form-group">
+                <label for="message-text" class="col-form-label">Descrizione:</label>
+                <textarea name="description" class="form-control" id="message-text" [(ngModel)]="description" required></textarea>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-primary" (click)="publishThisArticle()" [disabled]="!thisForm.valid">Pubblica</button>
+        <button type="button" class="btn btn-secondary" (click)="modal.close('')">Annulla</button>
+    </div>
+</ng-template>
+
+<!-- Torna indietro senza aver salvato le modifiche -->
+<ng-template #content2 let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Cancellazione articolo</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <p>Non hai salvato le modifiche apportate. Sei sicuro di voler tornare indietro?</p>
+    </div>
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-primary" routerLink=".." (click)="modal.close('')">Indietro</button>
+        <button type="button" class="btn btn-secondary" (click)="modal.close('')">Annulla</button>
+    </div>
+</ng-template>
+
+<!-- Cancella bozza -->
+<ng-template #content3 let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Cancellazione bozza</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <p>Stai per cancellare la bozza di articolo. Sei sicuro di voler cancellarla?</p>
+    </div>
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-primary" (click)="deleteDraftFromServer()">Cancella</button>
+        <button type="button" class="btn btn-secondary" (click)="modal.close('')">Annulla</button>
+    </div>
+</ng-template>

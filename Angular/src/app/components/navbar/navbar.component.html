@@ -1,0 +1,35 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <a class="navbar-brand" routerLink="blog" *ngIf="loggedIn">Home</a>
+  <a class="navbar-brand" routerLink="login" *ngIf="!loggedIn">Home</a>
+  <button class="navbar-toggler" type="button" (click)="toggleNavbar()">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" [ngClass]="{ 'show': navbarOpen }">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class="nav-link" routerLink="blog" *ngIf="loggedIn">Blog</a>
+      </li>
+      <form class="form-inline mt-2 mt-md-0">
+        <button type="button" style="color: white;" class="nav-link btn btn-success my-2 my-sm-0" routerLink="login" *ngIf="!loggedIn">Login</button>
+      </form>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="newsletter" *ngIf="loggedIn">Newsletter</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="subscribers" *ngIf="loggedIn">Subscribers</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="neweditor" *ngIf="loggedIn">New Editor</a>
+      </li>
+      <form class="form-inline mt-2 mt-md-0">
+        <button type="button" style="color: white;" class="nav-link btn btn-danger my-2 my-sm-0" (click)="logout($event)" *ngIf="loggedIn">Logout</button>
+      </form>
+      <li>
+        <a class="nav-link" routerLink="subscribe" *ngIf="!loggedIn">Iscriviti</a>
+      </li>
+      <li>
+        <a class="nav-link" routerLink="unsubscribe" *ngIf="!loggedIn">Cancella iscrizione</a>
+      </li>
+    </ul>
+  </div>
+</nav>

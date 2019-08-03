@@ -1,0 +1,8 @@
+<br>
+<h3>{{object}} - {{date}}</h3>
+<button type="submit" class="btn btn-primary float-right" routerLink="..">Indietro</button>
+<br><br>
+<div class="alert alert-danger" [hidden]="!some_error">
+    {{some_error}}
+</div>
+<ckeditor [editor]="Editor" [disabled]="isDisabled" [data]="editorData"></ckeditor>

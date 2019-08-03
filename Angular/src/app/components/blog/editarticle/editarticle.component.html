@@ -1,0 +1,76 @@
+<br>
+<h3>{{title}} - {{description}}</h3>
+<h5>{{date}}</h5>
+<button type="submit" class="btn btn-danger" (click)="openWindow(content2)">Cancella</button>
+<button type="submit" class="btn btn-primary float-right" (click)="openModalIfEdited(content3)">Indietro</button>
+<br><br>
+<div class="alert alert-success" [hidden]="!some_success">{{some_success}}</div>
+<div class="alert alert-danger" [hidden]="!some_error">{{some_error}}</div>
+
+<ckeditor [editor]="Editor" data={{myArticle.content}} (change)="hasBeenEdited($event)"
+    (fileUploadRequest)="onFileUploadRequest($event)" (fileUploadResponse)="onFileUploadResponse($event)">
+</ckeditor>
+
+<br>
+
+<button type="button" class="btn btn-primary float-right" data-toggle="modal" data-target="#exampleModal" *ngIf="edited" (click)="openWindow(content)">Salva</button>
+
+<!-- Modifica articolo -->
+<ng-template #content let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Modifica articolo</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form #articleForm=ngForm (ngSubmit)="updateThisArticle()">
+            <div class="form-group">
+                <label for="recipient-name" class="col-form-label">Titolo:</label>
+                <input type="text" name="title" class="form-control" id="recipient-name" [(ngModel)]="title" placeholder="Titolo" required>
+            </div>
+            <div class="form-group">
+                <label for="message-text" class="col-form-label">Descrizione:</label>
+                <textarea name="description" class="form-control" id="message-text" [(ngModel)]="description" placeholder="Descrizione" required></textarea>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-primary" (click)="updateThisArticle()" [disabled]="!articleForm.valid">Salva</button>
+        <button type="button" class="btn btn-secondary" (click)="modal.close('')">Annulla</button>
+    </div>
+</ng-template>
+
+<!-- Cancella articolo -->
+<ng-template #content2 let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Cancellazione articolo</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <p>Sei sicuro di voler continuare?</p>
+    </div>
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-danger" (click)="deleteArticle()">Cancella</button>
+        <button type="button" class="btn btn-secondary" (click)="modal.close('')">Annulla</button>
+    </div>
+</ng-template>
+
+<!-- Torna indietro senza aver salvato le modifiche -->
+<ng-template #content3 let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Cancellazione articolo</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <p>Non hai salvato le modifiche apportate. Sei sicuro di voler tornare indietro?</p>
+    </div>
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-primary" routerLink=".." (click)="modal.close('')">Indietro</button>
+        <button type="button" class="btn btn-secondary" (click)="modal.close('')">Annulla</button>
+    </div>
+</ng-template>

@@ -1,0 +1,23 @@
+<br>
+<button type="button" class="btn btn-dark float-right" routerLink="new">Scrivi <fa name="plus"></fa></button>
+<br><br>
+<div class="container">
+
+  <div class="row">
+
+    <div class="col-lg-4 col-sm-6 portfolio-item" *ngFor="let mynewsletter of myNewsletters">
+      <div class="card" style="width: 18rem;">
+        <div class="card-body">
+          <h5 class="card-title">{{mynewsletter.object}}</h5>
+          <h6 class="card-subtitle mb-2 text-muted">{{mynewsletter.created_at}}</h6>
+          <!-- remove html tags and limit string length -->
+          <p class="card-text">{{mynewsletter.content | stripTags | slice:0:20}}...</p>
+          <button class="btn btn-primary float-right" (click)="showMail(mynewsletter)">Vedi</button>
+        </div>
+      </div>
+      <br>
+    </div>
+
+  </div>
+
+</div>
