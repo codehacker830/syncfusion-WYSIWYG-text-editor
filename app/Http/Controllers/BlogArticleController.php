@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class BlogArticleController extends Controller
 {
@@ -22,7 +23,7 @@ class BlogArticleController extends Controller
     public function __construct()
     {
         $this->middleware('auth:api', ['except' =>
-            ['article', 'articles', 'mostRecentArticles', 'articlesWithPagination', 'howManyPages']]);
+            ['article', 'articles', 'mostRecentArticles', 'articlesWithPagination', 'howManyPages', 'uploadEJSImage']]);
     }
 
     /*
@@ -229,7 +230,7 @@ class BlogArticleController extends Controller
         return DB::table('images')->where('id', $id)->select('content')->get();
     }
 
-    public function uploadimage(UploadImageRequest $request)
+    public function uploadImage(UploadImageRequest $request)
     {
         /***
          * 
@@ -242,7 +243,7 @@ class BlogArticleController extends Controller
          * "url": "https://location-of-image"
          * }
          */
-        return $request->file;
+            return $request->file;
         $hash = hash('sha256', $request->file);
         $result = DB::table('images')->where('sha256Image', $hash)->count();
         if($result == 0) {
@@ -259,6 +260,28 @@ class BlogArticleController extends Controller
         return response()->json([
             'url' => $url
         ], Response::HTTP_OK);
-    }
+     }
 
+     public function uploadEJSImage(Request $request) {
+        if ($request->UploadFiles->isValid()) {
+            $file = $request->UploadFiles;
+            $pathfolder = public_path().'/uploads';
+                
+            // create foler if not exist
+            if(!file_exists($pathfolder)) {
+                mkdir($pathfolder);   
+            }
+            $filename = $file->getClientOriginalName();
+            // $part = explode('.', $filename);
+            // $current_timestamp = Carbon::now()->timestamp; // Produces something like 1552296328
+            // $filename = 'img_' . $current_timestamp . '.' . $part[1];
+
+            $file->move(base_path().'/public/uploads/', $filename);
+
+            $path = '/public/uploads/'.$filename;
+            return response()->json(['success'=> true, 'url' => $path ,'filename' => $filename ], 200); 
+        } else {
+            return response()->json(['message'=>"File key doesn't match"], 401); 
+        }
+     }
 }

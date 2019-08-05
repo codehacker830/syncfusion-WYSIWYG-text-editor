@@ -52,5 +52,6 @@ Route::group([
     Route::post('deletearticle', 'BlogArticleController@deleteArticle');
     Route::post('uploadimage', 'BlogArticleController@uploadImage');
     Route::get('getimage/{id}', 'BlogArticleController@getImage');
+    Route::post('uploadEJSImage', 'BlogArticleController@uploadEJSImage');
 
 });

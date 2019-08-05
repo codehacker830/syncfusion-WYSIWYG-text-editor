@@ -6,9 +6,9 @@ import { Injectable } from '@angular/core';
 export class TokenService {
 
   private iss = {
-    // login: 'http://localhost:8000/api/login'
+    login: 'http://localhost:8000/api/login',
     // signup: 'http://localhost:8000/api/signup'
-    login: 'https://control.viacolventoexperience.it/api/login',
+    // login: 'https://control.viacolventoexperience.it/api/login',
     refresh: 'https://control.viacolventoexperience.it/api/refresh',
     logout: 'https://control.viacolventoexperience.it/api/login'
   }

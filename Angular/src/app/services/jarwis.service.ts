@@ -11,8 +11,8 @@ import { Article } from '../Article';
 })
 export class JarwisService {
 
-  // private baseurl = 'http://localhost:8000/api';
-  private baseurl = 'https://control.viacolventoexperience.it/api';
+  private baseurl = 'http://localhost:8000/api';
+  // private baseurl = 'https://control.viacolventoexperience.it/api';
 
   constructor(private http: HttpClient, private Token: TokenService) { }
 
